@@ -1,3 +1,4 @@
+#! /usr/bin/env node
 import inquirer from "inquirer";
 // First we make a class object in which we define object properties
 class Student {
@@ -22,7 +23,14 @@ class Student {
     }
     pay_tuition_fees(amount) {
         this.balance -= amount;
-        console.log(`$${amount} Tution fees paid Sucessfully.\n Now your remaining Amount is $${this.balance}`);
+        if (this.balance <= 0) {
+            console.log(`your balance is not enough to pay the fees `);
+            // console.log(`$${amount} Tution fees paid Sucessfully.\n Now your remaining Amount is $${this.balance}`)
+        }
+        else {
+            console.log(`$${amount} Tution fees paid Sucessfully.\n Now your remaining Amount is $${this.balance}`);
+        }
+        // console.log(`$${amount} Tution fees paid Sucessfully.\n Now your remaining Amount is $${this.balance}`)
     }
     show_status() {
         console.log(`ID:${this.id}`);
@@ -50,6 +58,9 @@ class Student_manager {
         if (student_find) {
             student_find.enrollCourse(course);
             console.log(`${student_find.name} enrolled in ${course} course`);
+        }
+        else {
+            console.log("Student not found .Please enter a correct student Id");
         }
     }
     //Mehod to view a student balance
@@ -177,3 +188,18 @@ async function main() {
     }
 }
 main();
+let choices = await inquirer.prompt([
+    {
+        name: "Choice",
+        type: "list",
+        message: "Please Select an Option",
+        choices: [
+            "Add Student",
+            "Enroll Student",
+            "View Student Balance",
+            "Pay Fees",
+            "Show Status",
+            "Exit"
+        ]
+    }
+]);
